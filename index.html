@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cake Snow Bakery & Coffee Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --espresso: #1C0F08;
+    --cream: #F7EDD8;
+    --cream-dark: #EFE1C4;
+    --rose: #D4917A;
+    --sage: #8A9E7F;
+    --gold: #C4A35A;
+    --text-dark: #2B1A10;
+    --text-mid: #6B4C35;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: transparent;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(28, 15, 8, 0.92);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--cream);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--espresso);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ambient warm glow */
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,163,90,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  /* Snowflake-cake emblem */
+  .emblem {
+    width: 120px; height: 120px;
+    margin-bottom: 2rem;
+    animation: spin-slow 20s linear infinite;
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .emblem { animation: none; }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.3s forwards;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fade-up 0.8s 0.5s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: var(--cream);
+    opacity: 0;
+    animation: fade-up 0.8s 0.7s forwards;
+    letter-spacing: 0.04em;
+    max-width: 400px;
+  }
+  .hero-badges {
+    display: flex; gap: 1.5rem; margin-top: 2.5rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.9s forwards;
+  }
+  .badge {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.2rem;
+  }
+  .badge-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .badge-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(247,237,216,0.6);
+  }
+  .badge-divider {
+    width: 1px;
+    background: rgba(247,237,216,0.2);
+    align-self: stretch;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 3rem;
+    opacity: 0;
+    animation: fade-up 0.8s 1.1s forwards;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--espresso);
+    padding: 0.85rem 2.2rem;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #d4b26a; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    padding: 0.85rem 2.2rem;
+    border: 1px solid rgba(247,237,216,0.4);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover {
+    border-color: var(--cream);
+    background: rgba(247,237,216,0.08);
+  }
+
+  /* Scroll hint */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0;
+    animation: fade-in 1s 1.8s forwards;
+  }
+  .scroll-hint span {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(247,237,216,0.4);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(196,163,90,0.6), transparent);
+    animation: drip 1.8s ease-in-out infinite 2s;
+  }
+  @keyframes drip {
+    0%   { height: 0; opacity: 1; }
+    80%  { height: 40px; opacity: 1; }
+    100% { height: 40px; opacity: 0; }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    color: var(--rose);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--espresso);
+  }
+  .about-text p {
+    color: var(--text-mid);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  .hours-block {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--espresso);
+    color: var(--cream);
+  }
+  .hours-block h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .hours-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(247,237,216,0.1);
+    color: rgba(247,237,216,0.8);
+  }
+  .hours-row.today { color: var(--gold); font-weight: 500; }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-box {
+    background: var(--espresso);
+    aspect-ratio: 4/5;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .about-img-box svg { width: 60%; opacity: 0.3; }
+  .about-tag {
+    position: absolute;
+    bottom: -1.5rem; right: -1.5rem;
+    background: var(--rose);
+    padding: 1.2rem 1.5rem;
+    color: white;
+  }
+  .about-tag strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    display: block;
+    line-height: 1;
+  }
+  .about-tag span { font-size: 0.75rem; letter-spacing: 0.08em; }
+
+  /* ── MENU ── */
+  .menu-section {
+    background: var(--espresso);
+    padding: 6rem 4rem;
+  }
+  .menu-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .menu-header .section-eyebrow { color: var(--gold); }
+  .menu-header .section-title { color: var(--cream); }
+  .menu-tabs {
+    display: flex; justify-content: center; gap: 0; margin-bottom: 3rem;
+    border: 1px solid rgba(247,237,216,0.15);
+    width: fit-content; margin-left: auto; margin-right: auto;
+  }
+  .menu-tab {
+    padding: 0.65rem 1.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(247,237,216,0.5);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: all 0.2s;
+  }
+  .menu-tab.active {
+    background: var(--gold);
+    color: var(--espresso);
+    font-weight: 500;
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .menu-card {
+    background: rgba(247,237,216,0.05);
+    border: 1px solid rgba(247,237,216,0.1);
+    padding: 1.5rem;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .menu-card:hover {
+    background: rgba(247,237,216,0.09);
+    border-color: rgba(196,163,90,0.35);
+  }
+  .menu-card-icon {
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+  .menu-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+    font-weight: 400;
+  }
+  .menu-card p {
+    font-size: 0.8rem;
+    color: rgba(247,237,216,0.5);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .menu-card-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+  }
+
+  /* ── SPECIALS STRIP ── */
+  .specials-strip {
+    background: var(--rose);
+    padding: 1.2rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    overflow: hidden;
+  }
+  .specials-strip span {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: white;
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .specials-dot { color: rgba(255,255,255,0.4); font-size: 0.5rem; }
+
+  /* ── REVIEWS ── */
+  .reviews-section {
+    padding: 6rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .reviews-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3rem;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .star-row {
+    display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;
+  }
+  .stars { color: var(--gold); font-size: 1.1rem; letter-spacing: 0.1em; }
+  .review-count { font-size: 0.85rem; color: var(--text-mid); }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .review-card {
+    border: 1px solid var(--cream-dark);
+    padding: 1.8rem;
+    position: relative;
+  }
+  .review-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: var(--cream-dark);
+    position: absolute;
+    top: -0.5rem; left: 1rem;
+    line-height: 1;
+  }
+  .review-text {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.65;
+    padding-top: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .reviewer {
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .reviewer-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: white;
+    font-style: italic;
+    flex-shrink: 0;
+  }
+  .reviewer-name {
+    font-size: 0.82rem; font-weight: 500; color: var(--espresso);
+  }
+  .reviewer-stars { font-size: 0.7rem; color: var(--gold); }
+
+  /* ── VISIT ── */
+  .visit-section {
+    background: var(--cream-dark);
+    padding: 6rem 4rem;
+  }
+  .visit-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: start;
+  }
+  .info-row {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;
+  }
+  .info-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: var(--espresso);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .info-label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-mid); margin-bottom: 0.2rem;
+  }
+  .info-value {
+    font-size: 0.9rem; color: var(--espresso); font-weight: 400;
+  }
+  .info-value a { color: var(--espresso); }
+  .map-placeholder {
+    background: var(--espresso);
+    aspect-ratio: 4/3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1rem;
+  }
+  .map-placeholder span {
+    color: rgba(247,237,216,0.5);
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .map-placeholder a {
+    background: var(--gold);
+    color: var(--espresso);
+    padding: 0.65rem 1.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+  .map-placeholder a:hover { background: #d4b26a; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .footer-logo span { color: var(--rose); }
+  .footer-tagline {
+    font-family: 'Dancing Script', cursive;
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-top: 0.25rem;
+  }
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(247,237,216,0.4);
+  }
+  .footer-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .footer-links a {
+    color: rgba(247,237,216,0.5);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--cream); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .about, .visit-inner { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .about-visual { display: none; }
+    .about { padding: 4rem 1.5rem; }
+    .menu-section, .reviews-section { padding: 4rem 1.5rem; }
+    .visit-section { padding: 4rem 1.5rem; }
+    footer { padding: 2.5rem 1.5rem; flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+    .specials-strip { padding: 1rem; gap: 1.5rem; }
+    .reviews-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">Cake Snow</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#visit">Visit Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Snowflake-cake emblem SVG -->
+  <svg class="emblem" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#C4A35A" stroke-width="2" fill="none" opacity="0.9">
+      <!-- Main axes -->
+      <line x1="60" y1="8"  x2="60" y2="112"/>
+      <line x1="8"  y1="60" x2="112" y2="60"/>
+      <line x1="23" y1="23" x2="97" y2="97"/>
+      <line x1="97" y1="23" x2="23" y2="97"/>
+      <!-- Arm tips -->
+      <line x1="60" y1="8"  x2="48" y2="20"/><line x1="60" y1="8"  x2="72" y2="20"/>
+      <line x1="60" y1="112" x2="48" y2="100"/><line x1="60" y1="112" x2="72" y2="100"/>
+      <line x1="8"  y1="60" x2="20" y2="48"/><line x1="8"  y1="60" x2="20" y2="72"/>
+      <line x1="112" y1="60" x2="100" y2="48"/><line x1="112" y1="60" x2="100" y2="72"/>
+      <!-- Mid connectors -->
+      <line x1="60" y1="34" x2="50" y2="44"/><line x1="60" y1="34" x2="70" y2="44"/>
+      <line x1="60" y1="86" x2="50" y2="76"/><line x1="60" y1="86" x2="70" y2="76"/>
+      <line x1="34" y1="60" x2="44" y2="50"/><line x1="34" y1="60" x2="44" y2="70"/>
+      <line x1="86" y1="60" x2="76" y2="50"/><line x1="86" y1="60" x2="76" y2="70"/>
+    </g>
+    <!-- Center cake tier -->
+    <rect x="44" y="52" width="32" height="16" rx="2" fill="#D4917A" opacity="0.7"/>
+    <rect x="48" y="44" width="24" height="10" rx="2" fill="#D4917A" opacity="0.5"/>
+    <!-- Candle -->
+    <line x1="60" y1="44" x2="60" y2="38" stroke="#F7EDD8" stroke-width="2"/>
+    <circle cx="60" cy="36" r="3" fill="#C4A35A" opacity="0.9"/>
+    <!-- Snow dots -->
+    <circle cx="60" cy="16" r="2.5" fill="#C4A35A"/>
+    <circle cx="60" cy="104" r="2.5" fill="#C4A35A"/>
+    <circle cx="16" cy="60" r="2.5" fill="#C4A35A"/>
+    <circle cx="104" cy="60" r="2.5" fill="#C4A35A"/>
+  </svg>
+
+  <p class="hero-eyebrow">Handcrafted with love in Nepal</p>
+  <h1>Cake <em>Snow</em><br>Bakery</h1>
+  <p class="hero-sub">Where every bite is a little celebration &mdash; fresh bakes, specialty coffee, and sweet moments</p>
+
+  <div class="hero-badges">
+    <div class="badge">
+      <span class="badge-num">5.0</span>
+      <span class="badge-label">Google Rating</span>
+    </div>
+    <div class="badge-divider"></div>
+    <div class="badge">
+      <span class="badge-num">7+</span>
+      <span class="badge-label">Happy Reviews</span>
+    </div>
+    <div class="badge-divider"></div>
+    <div class="badge">
+      <span class="badge-num">9AM</span>
+      <span class="badge-label">Opens Daily</span>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#menu" class="btn-primary">View Our Menu</a>
+    <a href="#visit" class="btn-outline">Find Us</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- SPECIALS STRIP -->
+<div class="specials-strip">
+  <span>☕ Freshly Brewed Daily</span>
+  <span class="specials-dot">●</span>
+  <span>🎂 Custom Cakes Available</span>
+  <span class="specials-dot">●</span>
+  <span>🥐 Baked Fresh Every Morning</span>
+  <span class="specials-dot">●</span>
+  <span>🍰 Takeaway & Dine In</span>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-text">
+    <p class="section-eyebrow">Our Story</p>
+    <h2 class="section-title">A little corner of warmth in Bhaktapur</h2>
+    <p>Cake Snow was born from a simple belief: great coffee and freshly baked treats have the power to turn an ordinary day into something memorable.</p>
+    <p>Nestled in Anantalingeshwar, we craft every cake, every pastry, and every cup with care — using quality ingredients and recipes refined through passion, not shortcuts.</p>
+    <p>Whether you stop in for a quick espresso or settle in for an afternoon slice, you'll always leave a little happier than when you arrived.</p>
+
+    <div class="hours-block">
+      <h4>Opening Hours</h4>
+      <div class="hours-row today">
+        <span>Monday – Sunday</span>
+        <span>9:00 AM – 9:00 PM</span>
+      </div>
+      <div class="hours-row" style="border:none; margin-top:0.5rem;">
+        <span style="font-size:0.75rem; opacity:0.5;">Open 7 days a week</span>
+        <span style="font-size:0.75rem; color: #8A9E7F;">● Open Now</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-visual">
+    <div class="about-img-box">
+      <!-- Decorative cake illustration -->
+      <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stand -->
+        <ellipse cx="100" cy="235" rx="60" ry="10" fill="#C4A35A" opacity="0.6"/>
+        <rect x="90" y="210" width="20" height="30" fill="#C4A35A" opacity="0.4"/>
+        <!-- Plate -->
+        <ellipse cx="100" cy="212" rx="55" ry="8" fill="#F7EDD8" opacity="0.5"/>
+        <!-- Bottom tier -->
+        <ellipse cx="100" cy="180" rx="55" ry="10" fill="#D4917A" opacity="0.8"/>
+        <rect x="45" y="140" width="110" height="42" rx="4" fill="#D4917A" opacity="0.8"/>
+        <ellipse cx="100" cy="140" rx="55" ry="10" fill="#e0a590" opacity="0.9"/>
+        <!-- Middle tier -->
+        <ellipse cx="100" cy="125" rx="40" ry="8" fill="#C4A35A" opacity="0.7"/>
+        <rect x="60" y="90" width="80" height="37" rx="4" fill="#C4A35A" opacity="0.7"/>
+        <ellipse cx="100" cy="90" rx="40" ry="8" fill="#d4b26a" opacity="0.9"/>
+        <!-- Top tier -->
+        <ellipse cx="100" cy="76" rx="26" ry="6" fill="#8A9E7F" opacity="0.7"/>
+        <rect x="74" y="48" width="52" height="30" rx="4" fill="#8A9E7F" opacity="0.7"/>
+        <ellipse cx="100" cy="48" rx="26" ry="6" fill="#9db393" opacity="0.9"/>
+        <!-- Candles -->
+        <rect x="88" y="30" width="5" height="20" rx="1" fill="#F7EDD8" opacity="0.7"/>
+        <rect x="107" y="25" width="5" height="25" rx="1" fill="#F7EDD8" opacity="0.7"/>
+        <ellipse cx="90" cy="29" rx="4" ry="5" fill="#C4A35A" opacity="0.9"/>
+        <ellipse cx="109" cy="24" rx="4" ry="5" fill="#D4917A" opacity="0.9"/>
+        <!-- Snowflake dots -->
+        <circle cx="65"  cy="160" r="3" fill="white" opacity="0.3"/>
+        <circle cx="130" cy="155" r="2" fill="white" opacity="0.3"/>
+        <circle cx="80"  cy="108" r="2" fill="white" opacity="0.3"/>
+        <circle cx="118" cy="112" r="3" fill="white" opacity="0.3"/>
+        <circle cx="100" cy="62"  r="2" fill="white" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="about-tag">
+      <strong>5.0</strong>
+      <span>Rated Perfect</span>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-header">
+    <p class="section-eyebrow">What We Offer</p>
+    <h2 class="section-title">Our Menu Highlights</h2>
+  </div>
+
+  <div style="display:flex; justify-content:center; margin-bottom:2.5rem;">
+    <div class="menu-tabs">
+      <button class="menu-tab active">Cakes & Bakes</button>
+      <button class="menu-tab">Coffee & Drinks</button>
+      <button class="menu-tab">Snacks</button>
+    </div>
+  </div>
+
+  <div class="menu-grid" id="menu-grid">
+    <!-- Cards injected by JS below -->
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-section">
+    <div class="reviews-header">
+      <div>
+        <p class="section-eyebrow">What People Say</p>
+        <h2 class="section-title">Guest Reviews</h2>
+        <div class="star-row">
+          <span class="stars">★★★★★</span>
+          <span class="review-count">5.0 · 7 reviews on Google</span>
+        </div>
+      </div>
+      <a href="https://www.google.com/maps/search/Cake+Snow+Bakery" target="_blank" rel="noopener" class="btn-primary" style="align-self:center;">Leave a Review</a>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <p class="review-text">Absolutely delicious cakes — light, moist, and beautifully decorated. The coffee is excellent too. This has quickly become my favourite spot in the area.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--rose);">P</div>
+          <div>
+            <div class="reviewer-name">Priya S.</div>
+            <div class="reviewer-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <p class="review-text">The ambience is cozy and welcoming. The pastries are fresh every single day. I always leave with a smile and usually an extra box to take home.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--sage);">R</div>
+          <div>
+            <div class="reviewer-name">Roshan K.</div>
+            <div class="reviewer-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <p class="review-text">Best coffee shop in Bhaktapur, no contest. Their custom cakes are stunning and the taste matches the look. Highly recommended for any occasion.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:var(--gold); color:var(--espresso);">A</div>
+          <div>
+            <div class="reviewer-name">Anita M.</div>
+            <div class="reviewer-stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section class="visit-section" id="visit">
+  <div class="visit-inner">
+    <div>
+      <p class="section-eyebrow">Come Find Us</p>
+      <h2 class="section-title">Visit Cake Snow</h2>
+
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Address</div>
+          <div class="info-value">M989+28W, Anantalingeshwar<br>Bhaktapur 44600, Nepal</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Phone</div>
+          <div class="info-value"><a href="tel:9763443555">976-3443555</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🕘</div>
+        <div>
+          <div class="info-label">Hours</div>
+          <div class="info-value">Open daily &middot; 9:00 AM – 9:00 PM</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">⭐</div>
+        <div>
+          <div class="info-label">Rating</div>
+          <div class="info-value">5.0 on Google (7 reviews)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-placeholder">
+      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="26" r="12" stroke="#C4A35A" stroke-width="2"/>
+        <circle cx="30" cy="26" r="4" fill="#C4A35A"/>
+        <path d="M30 38 Q30 52 30 55" stroke="#C4A35A" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>Anantalingeshwar, Bhaktapur</span>
+      <a href="https://maps.google.com/maps?q=Cake+Snow+Bakery+%26+Coffee+Shop,+Bhaktapur" target="_blank" rel="noopener">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Cake <span>Snow</span> Bakery</div>
+    <div class="footer-tagline">& Coffee Shop</div>
+    <div class="footer-copy" style="margin-top:0.75rem;">© 2025 Cake Snow Bakery & Coffee Shop. Bhaktapur, Nepal.</div>
+  </div>
+
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="tel:9763443555">Call Us</a></li>
+    <li><a href="https://maps.google.com/maps?q=Cake+Snow+Bakery+Bhaktapur" target="_blank">Directions</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Menu data
+  const menuData = {
+    'Cakes & Bakes': [
+      { icon:'🎂', name:'Signature Snow Cake', desc:'Light vanilla sponge with whipped cream frosting and delicate sugar snowflakes', price:'Rs. 450' },
+      { icon:'🍫', name:'Chocolate Truffle Cake', desc:'Rich dark chocolate ganache layers with a velvety finish', price:'Rs. 380' },
+      { icon:'🍓', name:'Strawberry Shortcake', desc:'Fresh seasonal strawberries on feather-light cream and sponge', price:'Rs. 350' },
+      { icon:'🥐', name:'Butter Croissant', desc:'Flaky, golden, baked fresh each morning the old-fashioned way', price:'Rs. 120' },
+      { icon:'🧁', name:'Cupcakes (Set of 4)', desc:'Assorted flavours — vanilla, chocolate, red velvet, and lemon', price:'Rs. 280' },
+      { icon:'🍞', name:'Custom Celebration Cake', desc:'Made to order — share your vision and we will bring it to life', price:'Ask us' },
+    ],
+    'Coffee & Drinks': [
+      { icon:'☕', name:'Espresso', desc:'Single or double shot of our house-blend, rich and smooth', price:'Rs. 120' },
+      { icon:'🥛', name:'Café Latte', desc:'Espresso topped with steamed milk and a silky microfoam', price:'Rs. 180' },
+      { icon:'❄️', name:'Iced Cappuccino', desc:'Chilled espresso with cold-frothed milk over ice', price:'Rs. 200' },
+      { icon:'🍵', name:'Masala Chai', desc:'Spiced milk tea brewed with ginger, cardamom, and cinnamon', price:'Rs. 100' },
+      { icon:'🧊', name:'Cold Coffee', desc:'House cold brew blended with milk and a touch of sweetness', price:'Rs. 180' },
+      { icon:'🍹', name:'Seasonal Fruit Shake', desc:'Fresh blended fruits — ask about today\'s special', price:'Rs. 160' },
+    ],
+    'Snacks': [
+      { icon:'🥪', name:'Club Sandwich', desc:'Toasted layers with chicken, egg, cheese, and fresh vegetables', price:'Rs. 220' },
+      { icon:'🍕', name:'Mini Pizza', desc:'Thin-crust individual pizza with tomato sauce and mozzarella', price:'Rs. 260' },
+      { icon:'🥗', name:'Fresh Garden Salad', desc:'Crisp seasonal greens with a light lemon-herb dressing', price:'Rs. 150' },
+      { icon:'🍟', name:'Loaded Fries', desc:'Crispy fries topped with cheese sauce and your choice of toppings', price:'Rs. 180' },
+      { icon:'🥞', name:'Pancake Stack', desc:'Fluffy buttermilk pancakes with maple syrup and butter', price:'Rs. 200' },
+      { icon:'🍜', name:'Veg Noodles', desc:'Stir-fried noodles with fresh vegetables and a light soy sauce', price:'Rs. 170' },
+    ]
+  };
+
+  const tabs = document.querySelectorAll('.menu-tab');
+  const grid = document.getElementById('menu-grid');
+
+  function renderMenu(category) {
+    grid.innerHTML = menuData[category].map(item => `
+      <div class="menu-card">
+        <div class="menu-card-icon">${item.icon}</div>
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <span class="menu-card-price">${item.price}</span>
+      </div>
+    `).join('');
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderMenu(Object.keys(menuData)[i]);
+    });
+  });
+
+  renderMenu('Cakes & Bakes');
+</script>
+</body>
+</html>
